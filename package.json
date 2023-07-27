@@ -1,0 +1,20 @@
+{
+  "name": "school-grading-coding-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/flamechaoz/school-grading-coding-challenge.git",
+  "author": "Jerald Jon Pablo <jeraldjonpablo@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"yarn workspace server dev\" \"yarn workspace client dev\"",
+    "main": "yarn workspaces main dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
