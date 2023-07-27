@@ -25,11 +25,4 @@ app.use(cors(corsOptions));
 // v1 api routes
 app.use('/v1', routes);
 
-// Serve static assets in production, must be at this location of this file
-if (config.env === 'development') {
-  app.use(express.static('../../client/dist'));
-  
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../../client', 'dist','index.html')));
-}
-
 export default app;
