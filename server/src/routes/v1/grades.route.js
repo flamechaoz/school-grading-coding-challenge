@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { getGrades } from '../../controllers/grade.controller.js';
+import { gradeController } from '../../controllers/grade.controller.js';
 
 const gradesRoute = Router();
 
-gradesRoute.get('/', getGrades);
+gradesRoute
+  .route('/')
+  .get(gradeController.getGrades)
+  .post(gradeController.sampleSave);
 
 export default gradesRoute;

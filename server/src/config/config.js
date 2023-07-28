@@ -6,12 +6,13 @@ import joi from 'joi';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-config({ path: join(__dirname, '../../../.env') });
+config({ path: join(__dirname, '../../.env') });
 
 const envVarsSchema = joi.object()
   .keys({
     NODE_ENV: joi.string().valid('production', 'development', 'test').required(),
     PORT: joi.number().default(3000),
+    DATABASE_URL: joi.string().required().description('DB Url'),
   })
   .unknown();
 
@@ -23,5 +24,6 @@ if (error) {
 
 const env = envVars.NODE_ENV;
 const port = envVars.PORT;
+const database_url = envVars.DATABASE_URL;
 
-export default {env, port}
+export default {env, port, database_url}

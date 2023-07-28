@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import ApiError from "../utils/ApiError";
+import prisma from "../utils/prismaClient.js";
+import ApiError from "../utils/ApiError.js";
 
 const prisma = new PrismaClient();
 
@@ -14,4 +14,6 @@ const createHomework = async (homeworkBody) => {
   return newHomework;
 };
 
-export { createHomework }
+export const homeworkService = {
+  createHomework
+};
