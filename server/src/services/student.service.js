@@ -11,4 +11,6 @@ const createStudent = async (studentBody) => {
   return newStudent;
 };
 
-export { createStudent }
+export const studentService = {
+  createStudent
+};

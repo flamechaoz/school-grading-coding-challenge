@@ -14,4 +14,6 @@ const createHomework = async (homeworkBody) => {
   return newHomework;
 };
 
-export { createHomework }
+export const homeworkService = {
+  createHomework
+};
