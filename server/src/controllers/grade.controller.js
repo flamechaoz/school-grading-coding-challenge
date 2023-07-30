@@ -8,21 +8,28 @@ const getGrades = catchAsync(async (req, res) => {
 });
 
 const saveGrades = catchAsync(async (req, res) => {
-  const result = {data: "Hello world"}; 
-  res.send(result);
+  const result = studentService.createStudentWithGrades(req.body);
+  res.send(req.body);
 });
 
 const sampleSave = catchAsync(async (req, res) => {
   let studentBody = {
-    'name': 'Pabs'
+    name: 'Pabs',
+    homeworks: {
+      create: {
+        grade: 89,
+        quarter: 2,
+      }
+    },
+    tests: {
+      create: {
+        grade: 89,
+        quarter: 2,
+      }
+    },
   };
   const student = await studentService.createStudent(studentBody);
-  let testBody = {
-    'grade': 89,
-    'studentId': student.id
-  };
-  const test = await testService.createTest(testBody);
-  res.send({'student': student, 'test': test});
+  res.send({'student': student});
 });
 
 export const gradeController = {

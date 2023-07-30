@@ -16,7 +16,7 @@ model Student {
   updatedAt DateTime @updatedAt
   name      String @unique
   homeworks Homework[]
-  tests Test[]
+  tests     Test[]
 }
 
 model Homework {
@@ -24,6 +24,7 @@ model Homework {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
+  quarter   Int
   student   Student   @relation(fields: [studentId], references: [id])
   studentId Int
 }
@@ -33,6 +34,7 @@ model Test {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
+  quarter   Int
   student   Student   @relation(fields: [studentId], references: [id])
   studentId Int
 }
