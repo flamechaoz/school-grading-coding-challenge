@@ -28,12 +28,33 @@ const createStudent = async (studentBody) => {
 const createStudentWithGrades = async (studentBody) => {
   const record = await prisma.student.create({
     data: {
-
+      ...studentBody
     }
   });
+
+  return record;
 };
+
+const deleteStudentsRecords = async(studentBody) => {
+  const result = await prisma.student.update({
+    where: {
+      id: studentBody.id,
+    },
+    data: {
+      homeworks: {
+        deleteMany: {},
+      },
+      tests: {
+        deleteMany: {},
+      },
+    }
+  });
+
+  return result;
+}
 
 export const studentService = {
   createStudent,
-  createStudentWithGrades
+  createStudentWithGrades,
+  deleteStudentsRecords
 };

@@ -8,7 +8,8 @@ const getGrades = catchAsync(async (req, res) => {
 });
 
 const saveGrades = catchAsync(async (req, res) => {
-  const result = studentService.createStudentWithGrades(req.body);
+  console.log(req.body);
+  // const result = studentService.createStudentWithGrades(req.body);
   res.send(req.body);
 });
 
