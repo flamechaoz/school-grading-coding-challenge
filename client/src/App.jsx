@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import { GRADE_TYPE, QUARTERS } from './constants';
 
-import { Button, TextArea } from './components';
+import { Button, Table, TextArea } from './components';
 
 const App = () => {
   const [textAreaInput, setTextAreaInput] = useState('');
+  const [studentGrades, setStudentGrades] = useState([]);
+
+  const TABLE_HEADERS = ['Name', 'Quarter', 'Homeworks', 'Tests', 'Quarter Average'];
 
   const submitGrades = async () => {
     
@@ -81,12 +84,32 @@ const App = () => {
   const handleTextChange = (event) => {
     setTextAreaInput(event.target.value);
   };
+
+  const getStudentGrades = async () => {
+    const response = await axios
+      .get("http://localhost:3000/v1/grades")
+      .catch((error) => console.log(error));
+
+    setStudentGrades(response.data);
+  };
+
+  useEffect(() => {
+    getStudentGrades();
+  }, []);
   
   return (
     <>
       <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>
-      <TextArea value={textAreaInput} onChange={handleTextChange} />
-      <Button onClick={submitGrades} />
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-4">
+          <TextArea value={textAreaInput} onChange={handleTextChange} />
+          <Button onClick={submitGrades} />
+          <Button/>
+        </div>
+        <div className="col-span-8">
+          <Table headers={TABLE_HEADERS} data={studentGrades}/>
+        </div>
+      </div>
     </>
   )
 }
