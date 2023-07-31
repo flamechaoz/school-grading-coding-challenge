@@ -8,6 +8,7 @@ const gradesRoute = Router();
 gradesRoute
   .route('/')
   .get(gradeController.getGrades)
-  .post(validate(gradesValidation.saveGrades), gradeController.saveGrades);
+  .post(validate(gradesValidation.saveGrades), gradeController.saveGrades)
+  .delete(gradeController.deleteAllRecords);
 
 export default gradesRoute;

@@ -4,12 +4,21 @@ import './App.css';
 import { GRADE_TYPE, QUARTERS } from './constants';
 
 import { Button, Table, TextArea } from './components';
+import FileUpload from './components/FileUpload';
 
 const App = () => {
-  const [textAreaInput, setTextAreaInput] = useState('');
   const [studentGrades, setStudentGrades] = useState([]);
+  const [textAreaInput, setTextAreaInput] = useState('');
 
   const TABLE_HEADERS = ['Name', 'Quarter', 'Homeworks', 'Tests', 'Quarter Average'];
+
+  const clearRecords = async () => {
+    const response = await axios
+      .delete("http://localhost:3000/v1/grades")
+      .then(getStudentGrades())
+      .catch((error) => console.log(error));
+
+  };
 
   const getStudentGrades = async () => {
     const response = await axios
@@ -90,7 +99,21 @@ const App = () => {
   };
 
   const handleTextChange = (event) => {
-    setTextAreaInput(event.target.value);
+
+    if(event.target.type == 'textarea'){
+      setTextAreaInput(event.target.value);
+    }
+    else if(event.target.type == 'file'){
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target.result;
+          setTextAreaInput(content);
+        };
+        reader.readAsText(file);
+      }
+    }
   };
 
   useEffect(() => {
@@ -103,11 +126,16 @@ const App = () => {
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-4">
           <TextArea value={textAreaInput} onChange={handleTextChange} />
-          <Button onClick={submitGrades} />
-          <Button/>
+          <div className="flex justify-evenly mt-3">
+            <FileUpload text="Import from file" onChange={handleTextChange} />
+            <Button text="Submit" onClick={submitGrades} />
+          </div>
         </div>
         <div className="col-span-8">
           <Table headers={TABLE_HEADERS} data={studentGrades}/>
+          <div className="flex justify-start mt-3">
+            <Button text="CLEAR GRADES" onClick={clearRecords} />
+          </div>
         </div>
       </div>
     </>

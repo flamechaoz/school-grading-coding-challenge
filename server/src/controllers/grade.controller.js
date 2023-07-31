@@ -1,6 +1,13 @@
 import catchAsync from "../utils/catchAsync.js";
+import httpStatus from "http-status";
 import { recordService } from "../services/record.service.js";
 import dropSmallest from "../utils/dropSmallest.js";
+
+const deleteAllRecords = catchAsync(async (req, res) => {
+  await recordService.deleteAllRecords();
+
+  res.status(httpStatus.NO_CONTENT).send();
+});
 
 const getGrades = catchAsync(async (req, res) => {
   const allRecords = await recordService.getAllRecords();
@@ -50,6 +57,7 @@ const saveGrades = catchAsync(async (req, res) => {
 });
 
 export const gradeController = {
+  deleteAllRecords,
   getGrades,
   saveGrades
 };

@@ -52,6 +52,12 @@ const createRecords = async (recordName, recordQuarter, homeworks, tests) => {
   return newRecord;
 };
 
+const deleteAllRecords = async() => {
+  await prisma.test.deleteMany({});
+  await prisma.homework.deleteMany({});
+  await prisma.record.deleteMany({});
+};
+
 const deleteRecords = async(recordId, quarter) => {
   const result = await prisma.record.update({
     where: {
@@ -113,6 +119,7 @@ export const recordService = {
   addRecords,
   createRecord,
   createRecords,
+  deleteAllRecords,
   deleteRecords,
   getAllRecords,
   getRecord
