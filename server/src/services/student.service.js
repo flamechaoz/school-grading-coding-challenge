@@ -1,5 +1,49 @@
-import prisma from "../utils/prismaClient.js";
 import ApiError from "../utils/ApiError.js";
+import prisma from "../utils/prismaClient.js";
+import { homeworkService } from "./homework.service.js";
+import { testService } from "./test.service.js";
+
+const addStudentRecords = async (studentId, homeworks, tests) => {
+  // homeworks.forEach(async (homework) => {
+  //   await prisma.homework.create({
+  //     data: {
+  //       grade: homework.grade,
+  //       quarter: homework.quarter,
+  //       studentId: studentId
+  //     }
+  //   })
+  // });
+
+  // tests.forEach(async (test) => {
+  //   await prisma.test.create({
+  //     data: {
+  //       grade: test.grade,
+  //       quarter: test.quarter,
+  //       studentId: studentId
+  //     }
+  //   })
+  // });
+
+  const result = await prisma.student.update({
+    where: {
+      id: studentId,
+    },
+    data: {
+      homeworks: {
+        createMany: {
+          data: homeworks,
+        },
+      },
+      tests: {
+        createMany: {
+          data: tests,
+        },
+      },
+    },
+  });
+
+  return result;
+};
 
 const createStudent = async (studentBody) => {
   const newStudent = await prisma.student.create({
@@ -25,36 +69,60 @@ const createStudent = async (studentBody) => {
   return newStudent;
 };
 
-const createStudentWithGrades = async (studentBody) => {
-  const record = await prisma.student.create({
+const createStudentWithGrades = async (studentName, homeworks, tests) => {
+  const newStudent = await prisma.student.create({
     data: {
-      ...studentBody
+      name: studentName,
+      homeworks: {
+        create: homeworks,
+      },
+      tests: {
+        create: tests
+      },
     }
   });
 
-  return record;
+  return newStudent;
 };
 
-const deleteStudentsRecords = async(studentBody) => {
+const deleteStudentsRecords = async(studentId, quarter) => {
   const result = await prisma.student.update({
     where: {
-      id: studentBody.id,
+      id: studentId,
     },
     data: {
       homeworks: {
-        deleteMany: {},
+        deleteMany: {
+          quarter: quarter
+        },
       },
       tests: {
-        deleteMany: {},
+        deleteMany: {
+          quarter: quarter
+        },
       },
     }
   });
 
+  // await homeworkService.deleteMultipleHomeworks(studentId, quarter);
+  // await testService.deleteMultipleTests(studentId, quarter);
   return result;
 }
 
+const getStudentByName = async(studentName) => {
+  const student = await prisma.student.findUnique({
+    where: {
+      name: studentName,
+    },
+  });
+
+  return student;
+}
+
 export const studentService = {
+  addStudentRecords,
   createStudent,
   createStudentWithGrades,
-  deleteStudentsRecords
+  deleteStudentsRecords,
+  getStudentByName
 };

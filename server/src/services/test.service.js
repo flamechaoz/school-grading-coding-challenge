@@ -12,6 +12,16 @@ const createTest = async (testBody) => {
   return newTest;
 };
 
+const deleteMultipleTests = async (studentId, quarter) => {
+  const deleteTests = await prisma.test.deleteMany({
+    where: {
+      studentId: studentId,
+      quarter: quarter,
+    },
+  });
+}
+
 export const testService = {
-  createTest
+  createTest,
+  deleteMultipleTests
 };
