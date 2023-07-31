@@ -17,7 +17,7 @@ app.use(urlencoded({ extended: true }));
 
 // enable cors
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:4173'],
+    origin: ['http://localhost:5173', 'http://localhost:4173', 'https://school-grading-coding-challenge-web.onrender.com'],
     credentials: true,
   };
 app.use(cors(corsOptions));
