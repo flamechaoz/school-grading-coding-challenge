@@ -124,7 +124,7 @@ const App = () => {
       <h1 className="text-3xl font-bold underline text-center">Welcome Teacher!</h1>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-4">
-          <TextArea value={textAreaInput} onChange={handleTextChange} />
+          <TextArea value={textAreaInput} onChange={handleTextChange} placeholder="Input grades" />
           <div className="flex justify-evenly mt-3">
             <FileUpload text="Import from file" onChange={handleTextChange} />
             <Button text="Submit" onClick={submitGrades} />
