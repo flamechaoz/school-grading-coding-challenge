@@ -10,8 +10,4 @@ gradesRoute
   .get(gradeController.getGrades)
   .post(validate(gradesValidation.saveGrades), gradeController.saveGrades);
 
-gradesRoute
-  .route('/sample')
-  .post(gradeController.sampleSave);
-
 export default gradesRoute;

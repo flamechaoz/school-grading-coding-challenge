@@ -1,9 +1,15 @@
 import catchAsync from "../utils/catchAsync.js";
-import { studentService } from "../services/student.service.js";
+import { recordService } from "../services/record.service.js";
+import dropSmallest from "../utils/dropSmallest.js";
 
 const getGrades = catchAsync(async (req, res) => {
-  const result = {data: "Hello world"}; 
-  res.send(result);
+  const allRecords = await recordService.getAllRecords();
+
+  // prepare data
+  let activeQuarter = 1;
+  const data = [];
+
+  res.send(allRecords);
 });
 
 const saveGrades = catchAsync(async (req, res) => {
@@ -12,47 +18,38 @@ const saveGrades = catchAsync(async (req, res) => {
     const tests = [];
     const homeworks = [];
 
+    // drop smalles grades from homeworks and tests
+    record.homework = dropSmallest(record.homework);
+    record.test = dropSmallest(record.test);
+
     // ready homeworks and tests data
     record.test.forEach(testGrade => {
-      tests.push({quarter: record.quarter, grade: testGrade});
+      tests.push({grade: testGrade});
     });
 
     record.homework.forEach(homeworkGrade => {
-      homeworks.push({quarter: record.quarter, grade: homeworkGrade});
+      homeworks.push({grade: homeworkGrade});
     });
 
-    // check if theres an existing student
-    const findStudent = await studentService.getStudentByName(record.name);
+    // check if theres an existing record
+    const findRecord = await recordService.getRecord(record.name, record.quarter);
     
     // clear records and insert new records if yes
-    if(findStudent){
-      await studentService.deleteStudentsRecords(findStudent.id, record.quarter);
+    if(findRecord){
+      await recordService.deleteRecords(findRecord.id, record.quarter);
 
-      await studentService.addStudentRecords(findStudent.id, tests, homeworks);
+      await recordService.addRecords(findRecord.id, homeworks, tests);
     }
     // create new student record with grades
     else{
-      await studentService.createStudentWithGrades(record.name, tests, homeworks);
+      await recordService.createRecords(record.name, record.quarter, tests, homeworks);
     }
 
   }));
   res.send({result: 'Create finished.'});
 });
 
-const sampleSave = catchAsync(async (req, res) => {
-  // check if theres an existing student
-  const findStudent = await studentService.getStudentByName('Pabs');
-  let result;
-  // clear records and insert new records if yes
-  if(findStudent){
-    result = await studentService.deleteStudentsRecords(findStudent);
-  }
-
-  res.send({'result': result});
-});
-
 export const gradeController = {
   getGrades,
-  saveGrades,
-  sampleSave
+  saveGrades
 };

@@ -11,11 +11,12 @@ datasource db {
   relationMode      = "prisma"
 }
 
-model Student {
+model Record {
   id        Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String @unique
+  name      String
+  quarter   Int
   homeworks Homework[]
   tests     Test[]
 }
@@ -25,9 +26,8 @@ model Homework {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
-  quarter   Int
-  student   Student   @relation(fields: [studentId], references: [id])
-  studentId Int
+  record    Record   @relation(fields: [recordId], references: [id])
+  recordId  Int
 }
 
 model Test {
@@ -35,7 +35,6 @@ model Test {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
-  quarter   Int
-  student   Student   @relation(fields: [studentId], references: [id])
-  studentId Int
+  record    Record   @relation(fields: [recordId], references: [id])
+  recordId  Int
 }

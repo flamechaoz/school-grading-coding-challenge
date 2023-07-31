@@ -11,6 +11,14 @@ const App = () => {
 
   const TABLE_HEADERS = ['Name', 'Quarter', 'Homeworks', 'Tests', 'Quarter Average'];
 
+  const getStudentGrades = async () => {
+    const response = await axios
+      .get("http://localhost:3000/v1/grades")
+      .catch((error) => console.log(error));
+
+    setStudentGrades(response.data);
+  };
+
   const submitGrades = async () => {
     
     const parsedGrades = [];
@@ -78,19 +86,11 @@ const App = () => {
       .post("http://localhost:3000/v1/grades", parsedGrades)
       .catch((error) => console.log(error));
 
-    console.log(response.data);
+    getStudentGrades();
   };
 
   const handleTextChange = (event) => {
     setTextAreaInput(event.target.value);
-  };
-
-  const getStudentGrades = async () => {
-    const response = await axios
-      .get("http://localhost:3000/v1/grades")
-      .catch((error) => console.log(error));
-
-    setStudentGrades(response.data);
   };
 
   useEffect(() => {

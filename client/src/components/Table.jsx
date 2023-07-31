@@ -15,25 +15,27 @@ function Table ({ headers, data}){
               </thead>
               <tbody>
                 { data.length > 0 ? (
-                  data.map((row, key) => (
-                    <tr key={key} className="bg-white border-b">
-                      <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                          {row.name}
-                      </td>
-                      <td className="px-6 py-4">
-                          {row.quarter}
-                      </td>
-                      <td className="px-6 py-4">
-                          { row.homework.map((homeworkGrade, key) => (
-                              {homeworkGrade}
-                            ))
-                          }
-                      </td>
-                      <td className="px-6 py-4">
-                          $2999
-                      </td>
-                    </tr>
-                  ))
+                  data.map((record, key) => {
+                    return (
+                      <tr key={key} className="bg-white border-b">
+                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {record.name}
+                        </td>
+                        <td className="px-6 py-4">
+                            {record.quarter}
+                        </td>
+                        <td className="px-6 py-4">
+                          {record.homeworks.map(homework => homework.grade).join(' ')}
+                        </td>
+                        <td className="px-6 py-4">
+                          {record.tests.map(test => test.grade).join(' ')}
+                        </td>
+                        <td className="px-6 py-4">
+                          {record.quarterAverage}
+                        </td>
+                      </tr>
+                    )
+                  })
                 ) : (
                   <tr className="bg-white border-b">
                     <td>No items to display.</td>
