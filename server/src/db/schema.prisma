@@ -6,17 +6,19 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  relationMode      = "prisma"
 }
 
-model Student {
+model Record {
   id        Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String @unique
+  name      String
+  quarter   Int
   homeworks Homework[]
-  tests Test[]
+  tests     Test[]
 }
 
 model Homework {
@@ -24,8 +26,8 @@ model Homework {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
-  student   Student   @relation(fields: [studentId], references: [id])
-  studentId Int
+  record    Record   @relation(fields: [recordId], references: [id])
+  recordId  Int
 }
 
 model Test {
@@ -33,6 +35,6 @@ model Test {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   grade     Int
-  student   Student   @relation(fields: [studentId], references: [id])
-  studentId Int
+  record    Record   @relation(fields: [recordId], references: [id])
+  recordId  Int
 }
