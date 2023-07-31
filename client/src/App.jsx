@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
-import { GRADE_TYPE, QUARTERS } from './constants';
-
+import { BASE_URL, GRADE_TYPE, QUARTERS } from './constants';
 import { Button, Table, TextArea } from './components';
 import FileUpload from './components/FileUpload';
 
@@ -14,7 +13,7 @@ const App = () => {
 
   const clearRecords = async () => {
     const response = await axios
-      .delete("http://localhost:3000/v1/grades")
+      .delete(`${BASE_URL}/grades`)
       .then(getStudentGrades())
       .catch((error) => console.log(error));
 
@@ -22,7 +21,7 @@ const App = () => {
 
   const getStudentGrades = async () => {
     const response = await axios
-      .get("http://localhost:3000/v1/grades")
+      .get(`${BASE_URL}/grades`)
       .catch((error) => console.log(error));
 
     setStudentGrades(response.data);
@@ -92,7 +91,7 @@ const App = () => {
     }
 
     const response = await axios
-      .post("http://localhost:3000/v1/grades", parsedGrades)
+      .post(`${BASE_URL}/grades`, parsedGrades)
       .catch((error) => console.log(error));
 
     getStudentGrades();
@@ -122,7 +121,7 @@ const App = () => {
   
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>
+      <h1 className="text-3xl font-bold underline text-center">Welcome Teacher!</h1>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-4">
           <TextArea value={textAreaInput} onChange={handleTextChange} />

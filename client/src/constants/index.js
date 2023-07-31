@@ -1,3 +1,10 @@
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+const GRADE_TYPE = {
+  'H': 'homework',
+  'T': 'test',
+}
+
 const QUARTERS = {
   'Quarter 1, 2021': 1,
   'Quarter 2, 2021': 2,
@@ -5,12 +12,8 @@ const QUARTERS = {
   'Quarter 4, 2021': 4,
 };
 
-const GRADE_TYPE = {
-  'H': 'homework',
-  'T': 'test',
-}
-
 export {
+  BASE_URL,
   GRADE_TYPE,
   QUARTERS
 }
